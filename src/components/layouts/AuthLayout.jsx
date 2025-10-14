@@ -3,7 +3,7 @@ import React from 'react';
 function AuthLayout({ children }) {
   return (
     <div className='bg-[url("https://res.cloudinary.com/dzpcirnqq/image/upload/v1755964377/Screenshot_2025-08-23_212149_dqzkdw.png")] 
-                    md:bg-[url("https://res.cloudinary.com/dzpcirnqq/image/upload/v1757758725/Gemini_Generated_Image_lyu4iilyu4iilyu4_mprrr4.png")] 
+                    md:bg-[url("https://res.cloudinary.com/dzpcirnqq/image/upload/v1760347817/wmremove-transformed_fohxnu.jpg")] 
                     md:flex min-h-screen items-center justify-center bg-cover bg-no-repeat bg-center overflow-y-auto p-8'>
       
       <div className='w-full md:w-[60vw] md:mr-[600px] px-12 pt-8 pb-12'>
