@@ -149,7 +149,7 @@ const SignUp = () => {
 
           <button
             type='submit'
-            className='bg-blue-800 md:bg-purple-800 w-full text-white p-2 rounded-md'
+            className='bg-blue-800 md:bg-[#1490c2] w-full text-white p-2 rounded-md'
             disabled={loading}
           >
             {loading ? "Signing up..." : "SIGN UP"}

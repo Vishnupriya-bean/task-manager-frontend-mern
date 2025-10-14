@@ -87,7 +87,7 @@ const  Login = () =>{
 
             {error && <p className='text-red-500 text-xs pb-2.5'>{error}</p>}
 
-            <button type='submit' className='bg-blue-800 md:bg-purple-800 w-full text-white p-2 rounded-md' >
+            <button type='submit' className='bg-blue-800 md:bg-[#1490c2] w-full text-white p-2 rounded-md' >
               LOGIN
             </button>
 
