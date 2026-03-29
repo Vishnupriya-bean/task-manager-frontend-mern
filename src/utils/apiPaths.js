@@ -1,16 +1,17 @@
-export const BASE_URL = "https://taskmanager-backend-gqya.onrender.com"
+export const BASE_URL = "http://localhost:8800"
 
 // utils/apiPaths.js
 export const API_PATHS = {
-    AUTH : {
+    AUTH: {
         REGISTER: "/api/auth/register",
         LOGIN: "/api/auth/login",
         GET_PROFILE: "/api/auth/profile"
     },
 
     USERS: {
-        GET_ALL_USERS : "/api/users",
-        GET_USER_BY_ID : (userId) => `/api/users/${userId}`,
+        GET_ALL_USERS: "/api/users",
+        GET_TEAM_STATS: "/api/users/stats",
+        GET_USER_BY_ID: (userId) => `/api/users/${userId}`,
         CREATE_USER: "/api/users",
         UPDATE_USER: (userId) => `/api/users/${userId}`,
         DELETE_USER: (userId) => `/api/users/${userId}`,

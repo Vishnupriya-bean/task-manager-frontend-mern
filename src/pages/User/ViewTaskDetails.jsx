@@ -60,7 +60,7 @@ function ViewTaskDetails() {
       }
     }
   }
-  
+
 
   // Open attachment links
   const handleLinkClick = (link) => {
@@ -85,10 +85,10 @@ function ViewTaskDetails() {
                 <h2 className="text-sm md:text-xl font-medium">{task?.title}</h2>
                 <div
                   className={`text-[11px] md:text-[13px] font-medium ${getStatusTagColor(
-                    task?.status
+                    task?.userStatus || task?.status
                   )} px-4 py-0.5 rounded`}
                 >
-                  {task?.status}
+                  {task?.userStatus || task?.status}
                 </div>
               </div>
 

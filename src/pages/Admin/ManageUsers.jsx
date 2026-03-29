@@ -8,22 +8,28 @@ import toast from 'react-hot-toast'
 
 function ManageUsers() {
   const [allUsers, setAllUsers] = useState([])
-  const [loading, setLoading] = useState(true) 
+  const [loading, setLoading] = useState(true)
 
   const getAllUsers = async () => {
     try {
-      setLoading(true) 
-      const response = await axiosInstance.get(API_PATHS.USERS.GET_ALL_USERS)
+      setLoading(true)
+      const response = await axiosInstance.get(API_PATHS.USERS.GET_TEAM_STATS)
+      console.log("✓ Team stats response:", response.data)
       if (response.data?.length > 0) {
         setAllUsers(response.data)
       } else {
         setAllUsers([])
       }
     } catch (error) {
-      console.error("Error fetching users", error)
+      console.error("❌ Error fetching users:", {
+        message: error.message,
+        status: error.response?.status,
+        data: error.response?.data,
+        url: error.config?.url
+      })
       toast.error("Failed to load users. Please try again.")
     } finally {
-      setLoading(false) 
+      setLoading(false)
     }
   }
 

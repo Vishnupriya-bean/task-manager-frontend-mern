@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useUserAuth } from '../../hooks/useUserAuth'
+import UserContext from '../../context/userContext1'
 import DashboardLayout from '../../components/layouts/DashboardLayout'
 import { useNavigate } from 'react-router-dom'
 import axiosInstance from '../../utils/axiosInstance'
@@ -15,6 +16,7 @@ import CustomBarChart from '../../components/Charts/CustomBarChart'
 const COLORS = ["#8D51FF", "#00BBDB", "#7BCE00"]
 
 function UserDashboard() {
+  const { clearUser } = useContext(UserContext);
   useUserAuth();
   const navigate = useNavigate();
   const [dashboardData, setDashboardData] = useState(null)
@@ -44,6 +46,14 @@ function UserDashboard() {
   const getDashboardData = async () => {
     try {
       setLoading(true);
+      const token = localStorage.getItem("token");
+      console.log("Dashboard fetch token:", token);
+      if (!token) {
+        clearUser();
+        navigate("/login");
+        return;
+      }
+
       const response = await axiosInstance.get(API_PATHS.TASKS.GET_USER_DASHBOARD_DATA);
       if (response.data) {
         setDashboardData(response.data);
@@ -51,6 +61,10 @@ function UserDashboard() {
       }
     } catch (error) {
       console.log("Error fetching users:", error);
+      if (error.response?.status === 401) {
+        clearUser();
+        navigate("/login");
+      }
     } finally {
       setLoading(false);
     }

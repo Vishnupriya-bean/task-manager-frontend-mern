@@ -16,6 +16,8 @@ axiosInstance.interceptors.request.use(
         const accessToken = localStorage.getItem("token");
         if (accessToken) {
             config.headers.Authorization = `Bearer ${accessToken}`;
+        } else {
+            console.warn("No access token in localStorage for request", config.url);
         }
         return config;
     },
@@ -31,13 +33,17 @@ axiosInstance.interceptors.response.use(
     },
     (error) => {
         if (error.response) {
+            const message = error.response.data?.message || error.message;
             if (error.response.status === 401) {
-                window.location.href = "/login";
+                console.warn(`Unauthorized request; redirecting to login: ${message}`);
+                localStorage.removeItem("token");
+                // we avoid hard redirect here to keep console visible
+                // automatic redirection is handled by router guard (useUserAuth)
             } else if (error.response.status === 500) {
-                console.error("Server Error, Please try again.");
+                console.error(`Server Error (${error.response.status}): ${message}`);
             }
         }
-        return Promise.reject(error); 
+        return Promise.reject(error);
     }
 );
 

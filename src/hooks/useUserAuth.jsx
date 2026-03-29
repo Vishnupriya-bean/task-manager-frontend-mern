@@ -1,21 +1,15 @@
-import {useContext, useEffect, createContext} from 'react';
-import { useNavigate } from 'react-router-dom';
-import UserContext  from '../context/userContext1';
+import { useContext, useEffect, createContext } from 'react';
+import UserContext from '../context/userContext1';
 
-export const UseUserAuth  = createContext();
-
+export const UseUserAuth = createContext();
 
 export const useUserAuth = () => {
-    const {user, loading, clearUser} = useContext(UserContext)
-    const navigate = useNavigate();
+    const { user, loading } = useContext(UserContext);
 
-    useEffect(()=>{
-        if(loading) return;
-        if(user) return;
+    useEffect(() => {
+        // This hook is now passive; permission check / redirect is handled by PrivateRoute.
+        // It preserves auth state during transitions without immediate redirect race.
+    }, [user, loading]);
 
-        if(!user){
-            clearUser();
-            navigate("/login")
-        }
-    }, [user, loading, clearUser, navigate]);
-}
+    return { user, loading };
+};

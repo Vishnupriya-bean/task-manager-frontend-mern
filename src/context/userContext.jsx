@@ -1,40 +1,45 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import axiosInstance from "../utils/axiosInstance";
 import { API_PATHS } from "../utils/apiPaths";
 import UserContext from "./userContext1";
 
-const UserProvider = ({children}) =>{
+const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true); //New state to track loading
 
-    useEffect(()=>{
-        if(user) return;
+    useEffect(() => {
+        if (user) return;
 
         const accessToken = localStorage.getItem("token");
-        if(!accessToken){
+        if (!accessToken) {
             setLoading(false);
             return;
         }
-    
-        const fetchUser = async() =>{
-              try{
+
+        axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+
+        const fetchUser = async () => {
+            try {
                 const response = await axiosInstance.get(API_PATHS.AUTH.GET_PROFILE);
                 setUser(response.data);
-            }catch(error){
+            } catch (error) {
                 console.error("User not authenticated", error);
                 clearUser();
-            }finally{
+            } finally {
                 setLoading(false);
-             }
+            }
         }
         fetchUser();
-        
+
     }, [user])
-    
+
 
     const updateUser = (userData) => {
         setUser(userData);
-        localStorage.setItem("token", userData.token);
+        if (userData?.token) {
+            localStorage.setItem("token", userData.token);
+            axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${userData.token}`;
+        }
         setLoading(false);
     };
 
@@ -44,9 +49,9 @@ const UserProvider = ({children}) =>{
     };
 
     return (
-    <UserContext.Provider value={{user, loading, updateUser, clearUser}}>
-     {children}
-    </UserContext.Provider>
+        <UserContext.Provider value={{ user, loading, updateUser, clearUser }}>
+            {children}
+        </UserContext.Provider>
     );
 }
 
