@@ -1,53 +1,63 @@
-import React, { useContext } from 'react'
+import React, { useContext, Suspense } from 'react'
 import {
   BrowserRouter as Router,
   Routes,
   Route
 } from 'react-router-dom';
-import UserDashboard from './pages/User/UserDashboard';
-import Login from './pages/Auth/Login';
-import SignUp from './pages/Auth/SignUp';
-import ManageTasks from './pages/Admin/ManageTasks';
-import Dashboard from './pages/Admin/Dashboard';
-import CreateTask from './pages/Admin/CreateTask';
-import ManageUsers from './pages/Admin/ManageUsers';
-import MyTasks from './pages/User/MyTasks';
-import ViewTaskDetails from './pages/User/ViewTaskDetails';
-import PrivateRoute from './routes/PrivateRoute';
-import UserProvider from './context/userContext';
-import UserContext from './context/userContext1';
 import { Outlet } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
+import PrivateRoute from './routes/PrivateRoute';
+import UserProvider from './context/userContext';
+import UserContext from './context/userContext1';
 
+// Lazy load page components
+const Login = React.lazy(() => import('./pages/Auth/Login'));
+const SignUp = React.lazy(() => import('./pages/Auth/SignUp'));
+const UserDashboard = React.lazy(() => import('./pages/User/UserDashboard'));
+const ManageTasks = React.lazy(() => import('./pages/Admin/ManageTasks'));
+const Dashboard = React.lazy(() => import('./pages/Admin/Dashboard'));
+const CreateTask = React.lazy(() => import('./pages/Admin/CreateTask'));
+const ManageUsers = React.lazy(() => import('./pages/Admin/ManageUsers'));
+const MyTasks = React.lazy(() => import('./pages/User/MyTasks'));
+const ViewTaskDetails = React.lazy(() => import('./pages/User/ViewTaskDetails'));
+
+// Loading component
+const LoadingFallback = () => (
+  <div className="flex items-center justify-center min-h-screen bg-gray-50">
+    <div className="text-lg text-gray-600 font-medium">Loading...</div>
+  </div>
+);
 
 function App() {
   return (
     <UserProvider>
       <div>
         <Router>
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
+          <Suspense fallback={<LoadingFallback />}>
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<SignUp />} />
 
-            {/* Admin Routes */}
-            <Route element={<PrivateRoute allowedRoles={["admin"]} />}>
-              <Route path="/admin/dashboard" element={<Dashboard />} />
-              <Route path="/admin/tasks" element={<ManageTasks />} />
-              <Route path="/admin/create-task" element={<CreateTask />} />
-              <Route path="/admin/users" element={<ManageUsers />} />
-            </Route>
+              {/* Admin Routes */}
+              <Route element={<PrivateRoute allowedRoles={["admin"]} />}>
+                <Route path="/admin/dashboard" element={<Dashboard />} />
+                <Route path="/admin/tasks" element={<ManageTasks />} />
+                <Route path="/admin/create-task" element={<CreateTask />} />
+                <Route path="/admin/users" element={<ManageUsers />} />
+              </Route>
 
-            {/* User Routes */}
-            <Route element={<PrivateRoute allowedRoles={["member", "admin"]} />}>
-              <Route path="/user/dashboard" element={<UserDashboard />} />
-              <Route path="/user/tasks" element={<MyTasks />} />
-              <Route path="/user/task-details/:id" element={<ViewTaskDetails />} />
-            </Route>
+              {/* User Routes */}
+              <Route element={<PrivateRoute allowedRoles={["member", "admin"]} />}>
+                <Route path="/user/dashboard" element={<UserDashboard />} />
+                <Route path="/user/tasks" element={<MyTasks />} />
+                <Route path="/user/task-details/:id" element={<ViewTaskDetails />} />
+              </Route>
 
-            {/* Default Route */}
-            <Route path="/" element={<Root />} />
-          </Routes>
+              {/* Default Route */}
+              <Route path="/" element={<Root />} />
+            </Routes>
+          </Suspense>
         </Router>
       </div>
 

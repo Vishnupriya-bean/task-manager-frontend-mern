@@ -1,0 +1,1 @@
+const s=s=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s),t=s=>{if(null==s||isNaN(s))return"";const[t,r]=s.toString().split("."),e=t.replace(/\B(?=(\d{3})+(?!\d))/g,",");return r?`${e}.${r}`:e};export{t as a,s as v};
